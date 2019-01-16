@@ -1,0 +1,20 @@
+FROM ubuntu:18.04 as base
+RUN apt-get update && apt-get install curl firefox xvfb -y && rm -rf /var/cache/apt
+RUN curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest \
+  | grep browser_download_url \
+  | grep linux64 \
+  | cut -d '"' -f 4 \
+  | xargs curl -L | tar -zxvf - -C /usr/bin
+
+FROM base as test
+
+RUN apt-get update && apt-get install -y python3-pip && rm -rf /var/cache/apt
+ADD ./requirements.txt .
+RUN python3 -m pip install -r requirements.txt
+
+ADD browser_test browser_test
+ADD manage.py .
+ADD run-test.sh .
+RUN ./run-test.sh
+
+FROM base
