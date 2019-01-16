@@ -1,5 +1,4 @@
 FROM centos:7 as base
-RUN yum install -y epel-release && yum install -y npm && npm install -g jshint
 RUN yum install -y Xvfb firefox
 RUN dbus-uuidgen > /var/lib/dbus/machine-id
 RUN curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest \
