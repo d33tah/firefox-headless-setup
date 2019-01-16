@@ -1,10 +1,12 @@
 FROM ubuntu:18.04 as base
-RUN apt-get update && apt-get install curl firefox xvfb -y && rm -rf /var/cache/apt
+RUN apt-get update && apt-get install curl firefox -y && rm -rf /var/cache/apt
 RUN curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest \
   | grep browser_download_url \
   | grep linux64 \
   | cut -d '"' -f 4 \
   | xargs curl -L | tar -zxvf - -C /usr/bin
+
+ENV MOZ_HEADLESS=1
 
 FROM base as test
 
@@ -14,7 +16,6 @@ RUN python3 -m pip install -r requirements.txt
 
 ADD browser_test browser_test
 ADD manage.py .
-ADD run-test.sh .
-RUN ./run-test.sh
+RUN python3 ./manage.py test
 
 FROM base
