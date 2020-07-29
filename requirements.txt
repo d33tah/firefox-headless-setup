@@ -1,2 +1,2 @@
-django
 selenium
+Django==2.1.*
