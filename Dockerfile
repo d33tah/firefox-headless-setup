@@ -1,4 +1,4 @@
-FROM centos:7 as base
+FROM centos:8 as base
 RUN yum install -y firefox epel-release bzip2
 RUN dbus-uuidgen > /var/lib/dbus/machine-id
 RUN curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest \
@@ -15,7 +15,7 @@ ENV MOZ_HEADLESS=1
 
 FROM base as test
 
-RUN yum install -y python36 python36-setuptools
+RUN yum install -y python38 python38-setuptools
 RUN python3 -m easy_install pip
 ADD ./requirements.txt .
 RUN python3 -m pip install -r requirements.txt
