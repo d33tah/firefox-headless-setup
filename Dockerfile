@@ -1,5 +1,5 @@
-FROM centos:8 as base
-RUN yum install -y firefox epel-release bzip2
+FROM rockylinux:8 as base
+RUN yum install -y firefox epel-release bzip2 findutils
 RUN dbus-uuidgen > /var/lib/dbus/machine-id
 RUN curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest \
   | grep browser_download_url \
